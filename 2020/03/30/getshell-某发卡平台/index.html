@@ -6,15 +6,29 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Tag: bypass | Hexo</title>
+  <title>getshell 某发卡平台 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/tags/bypass/index.html">
+  <meta name="description" content="审计某发卡平台getshell">
+<meta property="og:type" content="article">
+<meta property="og:title" content="getshell 某发卡平台">
+<meta property="og:url" content="http://yoursite.com/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="审计某发卡平台getshell">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/1.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/3.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/4.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/2.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/5.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/6.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/7.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/8.png">
+<meta property="article:published_time" content="2020-03-30T09:14:16.000Z">
+<meta property="article:modified_time" content="2020-05-16T11:32:44.934Z">
 <meta property="article:author" content="阿欢">
+<meta property="article:tag" content="审计">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/1.png">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -150,71 +164,204 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-getshell-某发卡平台" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/30/test/" class="archive-article-date">
-  	<time datetime="2020-03-30T09:14:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-30</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/30/test/">emmmmmmm-一次bypass</a>
+    <h1 class="article-title" itemprop="name">
+      getshell 某发卡平台
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/" class="archive-article-date">
+  	<time datetime="2020-03-30T09:14:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-30</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>前言</strong></p>
+<p>之前在群里有个老兄求助帮忙审计一个自助发卡系统的cms 基于tp5开发  我反正没事 于是看了一下o-o 找到了几种getshell的方法 这里就介绍一种</p>
+<p><strong>正文</strong></p>
+<p>这个系统的后台上传是有两个步骤首先会调用 admin模块plugin控制器的update方法 通过 post的md5 和 filename 生成一个加密token 这个token会用于后面的检验<br><img src="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/1.png" alt="getshell-某发卡平台"></p>
+<p>对应源码<br><img src="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/3.png" alt="getshell-某发卡平台"></p>
+<p><img src="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/4.png" alt="getshell-某发卡平台"></p>
+<p>再来看看第二步  当然就是上传文件拉  不要看这里是上传失败就以为没上传噢<br><img src="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/2.png" alt="getshell-某发卡平台"></p>
+<p>看看对应的源码</p>
+<p><img src="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/5.png" alt="getshell-某发卡平台"></p>
+<p>这里</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if ($this-&gt;request-&gt;post(&#39;token&#39;) !&#x3D;&#x3D; md5($filename . session_id()))  </span><br></pre></td></tr></table></figure>
+<p>这一个判断是可以绕过的   因为   这里的  $filename = join(‘/‘, $md5) . “.{$ext}”;  而 $md5是可以控制的 ext 也是可以控制的 所以$filename可以控制  而且 post 的token也可以控制 这样当然可以绕过  具体的生成方法就是利用上传文件的第一步 自己可以随意构造post的md5值 并且没有检验针对post的md5参数  这是getshell的背景之一</p>
+<p>然后关键点在   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$info &#x3D; $file-&gt;move(&#39;static&#39; . DS . &#39;upload&#39; . DS . $md5[0], $md5[1], true))</span><br></pre></td></tr></table></figure> 这个move函数里  跟进这个move函数  在这个move函数里有一个关键的调用   </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$saveName &#x3D; $this-&gt;buildSaveName($savename);</span><br><span class="line">       $filename &#x3D; $path . $saveName;</span><br><span class="line"></span><br></pre></td></tr></table></figure> 
+<p>我们来看看这个buildsavename函数  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">protected function buildSaveName($savename)</span><br><span class="line">    &#123;</span><br><span class="line">        &#x2F;&#x2F; 自动生成文件名</span><br><span class="line">        if (true &#x3D;&#x3D;&#x3D; $savename) &#123;</span><br><span class="line">            if ($this-&gt;rule instanceof \Closure) &#123;</span><br><span class="line">                $savename &#x3D; call_user_func_array($this-&gt;rule, [$this]);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                switch ($this-&gt;rule) &#123;</span><br><span class="line">                    case &#39;date&#39;:</span><br><span class="line">                        $savename &#x3D; date(&#39;Ymd&#39;) . DS . md5(microtime(true));</span><br><span class="line">                        break;</span><br><span class="line">                    default:</span><br><span class="line">                        if (in_array($this-&gt;rule, hash_algos())) &#123;</span><br><span class="line">                            $hash     &#x3D; $this-&gt;hash($this-&gt;rule);</span><br><span class="line">                            $savename &#x3D; substr($hash, 0, 2) . DS . substr($hash, 2);</span><br><span class="line">                        &#125; elseif (is_callable($this-&gt;rule)) &#123;</span><br><span class="line">                            $savename &#x3D; call_user_func($this-&gt;rule);</span><br><span class="line">                        &#125; else &#123;</span><br><span class="line">                            $savename &#x3D; date(&#39;Ymd&#39;) . DS . md5(microtime(true));</span><br><span class="line">                        &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; elseif (&#39;&#39; &#x3D;&#x3D;&#x3D; $savename || false &#x3D;&#x3D;&#x3D; $savename) &#123;</span><br><span class="line">            $savename &#x3D; $this-&gt;getInfo(&#39;name&#39;);</span><br><span class="line">        &#125;</span><br><span class="line">        if (!strpos($savename, &#39;.&#39;)) &#123;</span><br><span class="line">            $savename .&#x3D; &#39;.&#39; . pathinfo($this-&gt;getInfo(&#39;name&#39;), PATHINFO_EXTENSION);</span><br><span class="line">        &#125;</span><br><span class="line">        return $savename;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure> 
+
+<p>兄弟萌 看见没 hh     关键点就在   最后一个if判断上  判断 $savename里是否有. 有的话就会直接 return $savename   那么这个savename是什么呢 看前面的调用发现 这个savename就是  调用move函数的第二个参数 也就是 $md5[1]  这个是咱们可以控制的呀 而且看move函数后面是将这个作为文件名了的  那么我们将$md5[1]设置成xxxx.php(要长与16位)  是不是已经成了!!! hh</p>
+<p>还需要注意一下  上传的时候 png图片前面一部分的格式需要保留 因为有检测 php代码丢后面就好<br><img src="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/6.png" alt="getshell-某发卡平台"></p>
+<p>你别看它返回的是上传失败 其实已经上传成功了  路径就是 xxxxx/static/upload/$md5[0]/$md5[1]</p>
+<p>我刚开始百思不得其解为什么会上传失败  一切都这么的流畅….  最后发现其实已经上传成功了….. 应该自己去访问一下的 这个地方有点傻了</p>
+<p><strong>最终</strong>：</p>
+<p>弄了个phpinfo上去  </p>
+<p><img src="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/7.png" alt="getshell-某发卡平台"></p>
+<p>看了一下disabled function  并不恐怖 而且是php 7  直接用 php7的bug 就能执行命令</p>
+<p><img src="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/8.png" alt="getshell-某发卡平台"></p>
+<p>提权的话还没有尝试 也不是很会提权………..eee 就这样…………</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">bypass</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">审计</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/bypassdog//" class="article-tag-list-link color5">bypassdog</a>
+        			<a href="/categories/php代码审计//" class="article-tag-list-link color3">php代码审计</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2020/03/30/test/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">emmmmmmm-一次bypass</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -237,9 +384,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,

@@ -152,6 +152,117 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-getshell-某发卡平台" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/">getshell 某发卡平台</a>
+    </h1>
+  
+
+        
+        <a href="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/" class="archive-article-date">
+  	<time datetime="2020-03-30T09:14:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-30</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>前言</strong></p>
+<p>之前在群里有个老兄求助帮忙审计一个自助发卡系统的cms 基于tp5开发  我反正没事 于是看了一下o-o 找到了几种getshell的方法 这里就介绍一种</p>
+<p><strong>正文</strong></p>
+<p>这个系统的后台上传是有两个步骤首先会调用 admin模块plugin控制器的update方法 通过 post的md5 和 filename 生成一个加密token 这个token会用于后面的检验<br><img src="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/1.png" alt="getshell-某发卡平台"></p>
+<p>对应源码<br><img src="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/3.png" alt="getshell-某发卡平台"></p>
+<p><img src="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/4.png" alt="getshell-某发卡平台"></p>
+<p>再来看看第二步  当然就是上传文件拉  不要看这里是上传失败就以为没上传噢<br><img src="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/2.png" alt="getshell-某发卡平台"></p>
+<p>看看对应的源码</p>
+<p><img src="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/5.png" alt="getshell-某发卡平台"></p>
+<p>这里</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if ($this-&gt;request-&gt;post(&#39;token&#39;) !&#x3D;&#x3D; md5($filename . session_id()))  </span><br></pre></td></tr></table></figure>
+<p>这一个判断是可以绕过的   因为   这里的  $filename = join(‘/‘, $md5) . “.{$ext}”;  而 $md5是可以控制的 ext 也是可以控制的 所以$filename可以控制  而且 post 的token也可以控制 这样当然可以绕过  具体的生成方法就是利用上传文件的第一步 自己可以随意构造post的md5值 并且没有检验针对post的md5参数  这是getshell的背景之一</p>
+<p>然后关键点在   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$info &#x3D; $file-&gt;move(&#39;static&#39; . DS . &#39;upload&#39; . DS . $md5[0], $md5[1], true))</span><br></pre></td></tr></table></figure> 这个move函数里  跟进这个move函数  在这个move函数里有一个关键的调用   </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$saveName &#x3D; $this-&gt;buildSaveName($savename);</span><br><span class="line">       $filename &#x3D; $path . $saveName;</span><br><span class="line"></span><br></pre></td></tr></table></figure> 
+<p>我们来看看这个buildsavename函数  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">protected function buildSaveName($savename)</span><br><span class="line">    &#123;</span><br><span class="line">        &#x2F;&#x2F; 自动生成文件名</span><br><span class="line">        if (true &#x3D;&#x3D;&#x3D; $savename) &#123;</span><br><span class="line">            if ($this-&gt;rule instanceof \Closure) &#123;</span><br><span class="line">                $savename &#x3D; call_user_func_array($this-&gt;rule, [$this]);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                switch ($this-&gt;rule) &#123;</span><br><span class="line">                    case &#39;date&#39;:</span><br><span class="line">                        $savename &#x3D; date(&#39;Ymd&#39;) . DS . md5(microtime(true));</span><br><span class="line">                        break;</span><br><span class="line">                    default:</span><br><span class="line">                        if (in_array($this-&gt;rule, hash_algos())) &#123;</span><br><span class="line">                            $hash     &#x3D; $this-&gt;hash($this-&gt;rule);</span><br><span class="line">                            $savename &#x3D; substr($hash, 0, 2) . DS . substr($hash, 2);</span><br><span class="line">                        &#125; elseif (is_callable($this-&gt;rule)) &#123;</span><br><span class="line">                            $savename &#x3D; call_user_func($this-&gt;rule);</span><br><span class="line">                        &#125; else &#123;</span><br><span class="line">                            $savename &#x3D; date(&#39;Ymd&#39;) . DS . md5(microtime(true));</span><br><span class="line">                        &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; elseif (&#39;&#39; &#x3D;&#x3D;&#x3D; $savename || false &#x3D;&#x3D;&#x3D; $savename) &#123;</span><br><span class="line">            $savename &#x3D; $this-&gt;getInfo(&#39;name&#39;);</span><br><span class="line">        &#125;</span><br><span class="line">        if (!strpos($savename, &#39;.&#39;)) &#123;</span><br><span class="line">            $savename .&#x3D; &#39;.&#39; . pathinfo($this-&gt;getInfo(&#39;name&#39;), PATHINFO_EXTENSION);</span><br><span class="line">        &#125;</span><br><span class="line">        return $savename;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure> 
+
+<p>兄弟萌 看见没 hh     关键点就在   最后一个if判断上  判断 $savename里是否有. 有的话就会直接 return $savename   那么这个savename是什么呢 看前面的调用发现 这个savename就是  调用move函数的第二个参数 也就是 $md5[1]  这个是咱们可以控制的呀 而且看move函数后面是将这个作为文件名了的  那么我们将$md5[1]设置成xxxx.php(要长与16位)  是不是已经成了!!! hh</p>
+<p>还需要注意一下  上传的时候 png图片前面一部分的格式需要保留 因为有检测 php代码丢后面就好<br><img src="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/6.png" alt="getshell-某发卡平台"></p>
+<p>你别看它返回的是上传失败 其实已经上传成功了  路径就是 xxxxx/static/upload/$md5[0]/$md5[1]</p>
+<p>我刚开始百思不得其解为什么会上传失败  一切都这么的流畅….  最后发现其实已经上传成功了….. 应该自己去访问一下的 这个地方有点傻了</p>
+<p><strong>最终</strong>：</p>
+<p>弄了个phpinfo上去  </p>
+<p><img src="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/7.png" alt="getshell-某发卡平台"></p>
+<p>看了一下disabled function  并不恐怖 而且是php 7  直接用 php7的bug 就能执行命令</p>
+<p><img src="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/8.png" alt="getshell-某发卡平台"></p>
+<p>提权的话还没有尝试 也不是很会提权………..eee 就这样…………</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">审计</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/php代码审计//" class="article-tag-list-link color3">php代码审计</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-test" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -355,6 +466,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">审计</a>
+              </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">bypass</a>
