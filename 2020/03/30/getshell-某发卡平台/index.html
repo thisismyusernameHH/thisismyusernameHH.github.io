@@ -24,7 +24,7 @@
 <meta property="og:image" content="http://yoursite.com/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/7.png">
 <meta property="og:image" content="http://yoursite.com/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/8.png">
 <meta property="article:published_time" content="2020-03-30T09:14:16.000Z">
-<meta property="article:modified_time" content="2020-05-16T11:32:44.934Z">
+<meta property="article:modified_time" content="2020-05-27T08:08:50.262Z">
 <meta property="article:author" content="阿欢">
 <meta property="article:tag" content="审计">
 <meta name="twitter:card" content="summary">
@@ -185,12 +185,12 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p><strong>前言</strong></p>
-<p>之前在群里有个老兄求助帮忙审计一个自助发卡系统的cms 基于tp5开发  我反正没事 于是看了一下o-o 找到了几种getshell的方法 这里就介绍一种</p>
+<p>之前在群里有个老兄求助帮忙审计一个自助发卡系统的cms(还是1块钱买来的) 基于tp5开发  我反正没事 于是看了一下o-o 找到了几种getshell的方法 这里就介绍一种</p>
 <p><strong>正文</strong></p>
 <p>这个系统的后台上传是有两个步骤首先会调用 admin模块plugin控制器的update方法 通过 post的md5 和 filename 生成一个加密token 这个token会用于后面的检验<br><img src="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/1.png" alt="getshell-某发卡平台"></p>
 <p>对应源码<br><img src="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/3.png" alt="getshell-某发卡平台"></p>
 <p><img src="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/4.png" alt="getshell-某发卡平台"></p>
-<p>再来看看第二步  当然就是上传文件拉  不要看这里是上传失败就以为没上传噢<br><img src="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/2.png" alt="getshell-某发卡平台"></p>
+<p>再来看看第二步  当然就是上传文件拉  下面就是个平常的上传文件包<br><img src="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/2.png" alt="getshell-某发卡平台"></p>
 <p>看看对应的源码</p>
 <p><img src="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/5.png" alt="getshell-某发卡平台"></p>
 <p>这里</p>
@@ -204,7 +204,7 @@
 <p>兄弟萌 看见没 hh     关键点就在   最后一个if判断上  判断 $savename里是否有. 有的话就会直接 return $savename   那么这个savename是什么呢 看前面的调用发现 这个savename就是  调用move函数的第二个参数 也就是 $md5[1]  这个是咱们可以控制的呀 而且看move函数后面是将这个作为文件名了的  那么我们将$md5[1]设置成xxxx.php(要长与16位)  是不是已经成了!!! hh</p>
 <p>还需要注意一下  上传的时候 png图片前面一部分的格式需要保留 因为有检测 php代码丢后面就好<br><img src="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/6.png" alt="getshell-某发卡平台"></p>
 <p>你别看它返回的是上传失败 其实已经上传成功了  路径就是 xxxxx/static/upload/$md5[0]/$md5[1]</p>
-<p>我刚开始百思不得其解为什么会上传失败  一切都这么的流畅….  最后发现其实已经上传成功了….. 应该自己去访问一下的 这个地方有点傻了</p>
+<p>我刚开始百思不得其解为什么会上传失败  一切都这么的流畅….  最后自己在本地搭建了环境，然后实验，偶然间,去瞟了一眼上传目录,发现……其实已经上传成功了….. 应该自己去访问一下的 这个地方有点傻了</p>
 <p><strong>最终</strong>：</p>
 <p>弄了个phpinfo上去  </p>
 <p><img src="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/7.png" alt="getshell-某发卡平台"></p>
@@ -325,6 +325,15 @@
 
   
 <nav id="article-nav">
+  
+    <a href="/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          如何日母校
+        
+      </div>
+    </a>
   
   
     <a href="/2020/03/30/test/" id="article-nav-older" class="article-nav-link-wrap">

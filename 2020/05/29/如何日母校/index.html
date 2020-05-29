@@ -6,15 +6,30 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Tag: bypass | Hexo</title>
+  <title>如何日母校 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/tags/bypass/index.html">
+  <meta name="description" content="绕过万恶的waf并getshell">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何日母校">
+<meta property="og:url" content="http://yoursite.com/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="绕过万恶的waf并getshell">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/1.png">
+<meta property="og:image" content="http://yoursite.com/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/2.png">
+<meta property="og:image" content="http://yoursite.com/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/6.png">
+<meta property="og:image" content="http://yoursite.com/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/3.png">
+<meta property="og:image" content="http://yoursite.com/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/4.png">
+<meta property="og:image" content="http://yoursite.com/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/5.png">
+<meta property="og:image" content="http://yoursite.com/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/7.png">
+<meta property="og:image" content="http://yoursite.com/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/8.png">
+<meta property="og:image" content="http://yoursite.com/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/9.png">
+<meta property="article:published_time" content="2020-05-29T15:06:01.000Z">
+<meta property="article:modified_time" content="2020-05-29T16:15:45.599Z">
 <meta property="article:author" content="阿欢">
+<meta property="article:tag" content="bypass">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/1.png">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -150,36 +165,92 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-如何日母校" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/" class="archive-article-date">
-  	<time datetime="2020-05-29T15:06:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-29</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/">如何日母校</a>
+    <h1 class="article-title" itemprop="name">
+      如何日母校
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/" class="archive-article-date">
+  	<time datetime="2020-05-29T15:06:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-29</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>前言</strong></p>
+<p>这个说来话长,先是学弟发现了弱口令,然后有可恶的waf，然后一起来绕一波,然后还有一波番外情节,先来描述一下番外情结</p>
+<p><strong>番外篇</strong><br>在渗透这个系统的过程中,我抓包在js发现了被注释掉的另外一个网站，手滑顺手访问之,发现竟然和我学校的这个平台一模一样,因为学校有waf所以我就先搞这个一样的平台，同样弱口令进入后台，任意文件上传，getshell 一气呵成 然后  绕了bypassdisable 用的是 </p>
+<p><a href="https://github.com/yangyangwithgnu/bypass_disablefunc_via_LD_PRELOAD" target="_blank" rel="noopener">https://github.com/yangyangwithgnu/bypass_disablefunc_via_LD_PRELOAD</a>  这个大哥的脚本 这位大哥我是真的佩服 他在freebuf发的文章我也全部看过,真的厉害 回到正题  getshell后我发现这竟然是运维的服务器,后面提了一波权,非常可惜的是,redis反弹root权限shell回来后,我添加完用户,退出shell 去连ssh 发现密码不对….. 同时 我ps -ef 看了一下 瞬间 我的心中有一万只草泥马飞过, 我想一拳锤爆电脑，….redis被打下线了….我苦苦等待了几天，还是没有上线,……机会一去不复返………….运维的机器上有很多宝藏,以后日站可以找找运维的站,一般都会搭建相同的环境，当然比最后线上的脆弱许多.<br>好了不bb太多了 说正文把</p>
+<p><strong>正文</strong></p>
+<p>进后台后，找到上传点,首先我发现改后缀后重新发包生成的文件的后缀没有变化,我第一次后缀是.jpg 第二次改成.x 但是显示上传成功还是jpg 此时有一丝不安涌上心头</p>
+<p><img src="/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/1.png" alt="如何日母校"></p>
+<p>接着我想是不是上图中的moudle值影响   然后我改了moudle值 发包  咦  上传成功 然后返回文件还是jpg  不慌 继续<br>然后我改了文件内容 在一发包 嘿嘿 返回文件后缀变成 x了 此时 心中已经是胸有成竹 好像已经日下来了一样(没想到后面绕waf饶了好久)……</p>
+<p>刚开始的时候 我发现只要一个包被waf检测到 那直接封几个小时…..我擦了…有这么变态的吗……………..然后第一天果断放弃 玩玩游戏什么的不香吗…..</p>
+<p>第二天晚上 有点无聊 打开burp 打开浏览器 访问之 , 这次我发包学聪明了,之前一发恶意包 然后wating 好久 然后connect reset 然后凉凉<br>这次我只要发现在waiting 我直接cancle 我发现这样竟然不会马上封我  可能因为 我提前断开连接了? 还是什么原因不知道 这样就可以继续fuzzing了</p>
+<p>刚开始尝试就给我当头一棒  waf直接检测 <?php   不能出现php标签, 我想 这玩个屁, 只有用php短标签碰一碰运气了  关于php短标签 我是从百度上找的:
+当解析一个文件时，PHP 会寻找起始和结束标记，也就是 <?php 和 ?>，这告诉 PHP 开始和停止解析二者之间的代码。此种解析方式使得 PHP 可以被嵌入到各种不同的文档中去，而任何起始和结束标记之外的部分都会被 PHP 解析器忽略。</p>
+<p>PHP 也允许使用短标记 <? 和 ?>，但不鼓励使用。只有通过激活 php.ini 中的 short_open_tag 配置指令或者在编译 PHP 时使用了配置选项 –enable-short-tags 时才能使用短标记</p>
+<p>因为需要开启一个配置选项 所以说只能是碰碰运气  没想到还真可以  发了个 <? echo 1111 ?> 发现可以 讲到这儿又要说一下怎么绕过  filename=’xxxxx.php’ 这个地方waf的检测了 试了几种  ‘xx.jpg.php’ ‘xxx.php.jpg’  截断 还有各种后缀 phtml pht php3 php4 Php<br>filename=’xxxxx.jpg’；filename=’xxxxx.php’ 还有几种奇奇怪怪的模式 等等发现都绕不过 这时候想起来从别人那学到的垃圾数据,你别说,垃圾数据真给力,我生成了20w个1,发包! 一发入魂,成功让waf崩溃或者说waf对filename的长度没有处理什么的 如下图:</p>
+<p><img src="/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/2.png" alt="如何日母校"></p>
+<p>接下来继续说php文件的内容如何绕过waf,经过漫长的尝试我发现   eval() 不能出现  而且很多函数 比如 file_get_contents() 都是不能直接出现的 不过有一些函数可以通过</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$a&#x3D;&quot;file_&quot;+&quot;get_&quot;+&quot;contents&quot;; $a();  </span><br></pre></td></tr></table></figure>  
+<p>这种方式来利用 但是不是所有函数都可以 什么 eval file_put_contents 都不行 本来准备利用 file_put_contents来写文件的这条路也不行了<br>还想到了 无字母shell<br><img src="/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/6.png" alt="如何日母校"><br>可惜直接传不行  需要在后面加一个左括号 (  或者 )  可能检测了括号的匹配对数  然后我尝试 注释掉多余的括号 但是发现 加了注释就绕不过了 ….<br>思考的时候,瞅了瞅以前绕waf的一些东西(所以说收集一些免杀东西什么还是有用的),直接放上去都不太行,不过我发现了一个比较关键的 那就是利用注释来进行混淆    几次尝试后发现 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eval(&#x2F;*-&#x2F;*-*&#x2F;$p&#x2F;*-&#x2F;*-*&#x2F;&#x2F;*-&#x2F;*-*&#x2F;&#x2F;*-&#x2F;*-*&#x2F;); </span><br></pre></td></tr></table></figure>
+<p>这个不会被拦截,终于,我看到了希望,只要eval不被拦,什么都有戏,然后就是  如何构造这个$p了 直接<br>从 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$p&#x3D;$-GET[&#39;x&#39;];$p&#x3D;$-POST[&#39;x&#39;];$p&#x3D;$-SERVER[&#39;X&#39;] </span><br></pre></td></tr></table></figure> 这样都是不行会被封, 不过嘛还有 php:input 关于php:input流,我从百度找的介绍:<br>php://input :<br>php://input 是个可以访问请求的原始数据的只读流。 POST 请求的情况下，最好使用 php://input 来代替 $HTTP_RAW_POST_DATA</p>
+<p>通过他能获取参数就是  那么基本的小马就形成了  如下:</p>
+<p><img src="/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/3.png" alt="如何日母校"></p>
+<p>测试一下<br><img src="/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/4.png" alt="如何日母校"></p>
+<p>成功 发现disable了一些东西  刚开始也尝试过写cmd马 system执行也写成功 看来成功了也没用 给禁掉了</p>
+<p>然后直接 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file_put_contents(&#39;1.php&#39;,base64_decode(&#39;流量加密小马内容&#39;))</span><br></pre></td></tr></table></figure>  
+
+<p>还是我太天真了  直接给我封了 过不去   看来还需要一层加密  </p>
+<p><img src="/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/5.png" alt="如何日母校"></p>
+<p>测试一下 </p>
+<p><img src="/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/7.png" alt="如何日母校">  </p>
+<p>nice! </p>
+<p>直接写流量加密小马!<br><img src="/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/8.png" alt="如何日母校"></p>
+<p>蚁剑访问之 看到了 绿色的连接成功 心中一丝舒爽涌上心头</p>
+<p><img src="/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/9.png" alt="如何日母校"></p>
+<p>写完这个博客 也12点过了 洗洗睡吧……………………………………</p>
+<p><strong>end</strong></p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -191,7 +262,7 @@
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -204,66 +275,104 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/30/test/" class="archive-article-date">
-  	<time datetime="2020-03-30T09:14:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-30</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">getshell 某发卡平台</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/30/test/">emmmmmmm-一次bypass</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">bypass</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/bypassdog//" class="article-tag-list-link color5">bypassdog</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+
   
   
-    </div></section>
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -286,9 +395,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
