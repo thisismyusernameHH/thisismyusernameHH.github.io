@@ -24,7 +24,7 @@
 <meta property="og:image" content="http://yoursite.com/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/7.png">
 <meta property="og:image" content="http://yoursite.com/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/8.png">
 <meta property="article:published_time" content="2020-03-30T09:14:16.000Z">
-<meta property="article:modified_time" content="2020-05-27T08:08:50.262Z">
+<meta property="article:modified_time" content="2020-05-30T15:09:14.353Z">
 <meta property="article:author" content="阿欢">
 <meta property="article:tag" content="审计">
 <meta name="twitter:card" content="summary">
@@ -190,6 +190,7 @@
 <p>这个系统的后台上传是有两个步骤首先会调用 admin模块plugin控制器的update方法 通过 post的md5 和 filename 生成一个加密token 这个token会用于后面的检验<br><img src="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/1.png" alt="getshell-某发卡平台"></p>
 <p>对应源码<br><img src="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/3.png" alt="getshell-某发卡平台"></p>
 <p><img src="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/4.png" alt="getshell-某发卡平台"></p>
+<a id="more"></a>
 <p>再来看看第二步  当然就是上传文件拉  下面就是个平常的上传文件包<br><img src="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/2.png" alt="getshell-某发卡平台"></p>
 <p>看看对应的源码</p>
 <p><img src="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/5.png" alt="getshell-某发卡平台"></p>

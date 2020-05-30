@@ -21,7 +21,7 @@
 <meta property="og:image" content="http://yoursite.com/2020/03/30/test/4.png">
 <meta property="og:image" content="http://yoursite.com/2020/03/30/test/5.png">
 <meta property="article:published_time" content="2020-03-30T09:14:16.000Z">
-<meta property="article:modified_time" content="2020-03-30T13:00:43.220Z">
+<meta property="article:modified_time" content="2020-05-30T15:09:05.588Z">
 <meta property="article:author" content="阿欢">
 <meta property="article:tag" content="bypass">
 <meta name="twitter:card" content="summary">
@@ -186,6 +186,7 @@
 <p>基本情况是可以写入aspx文件  需要绕过waf</p>
 <p><strong>困难重重</strong></p>
 <p>自己尝试的时候 找了很多免杀小马 统统不得劲  这个waf 检测了很多关键字  什么 request  creatobject   write(…) 等等 经过一个晚上和上午的战斗 还是拿不下来， 于是找了位大哥帮忙，大哥果然是大哥，发现了http参数污染</p>
+<a id="more"></a>
 <p><img src="/2020/03/30/test/2.png" alt="test"><br><img src="/2020/03/30/test/1.png" alt="test"></p>
 <p>这种参数污染我实践中还没遇到过,实属第一次  我以前以为参数污染 要么 服务端会取前一个 要么会取后一个  ，竟然还可以把前后拼接 ,可以,很吊!</p>
 <p>那么这个dog waf 基本上已经是完了  利用多个code 把关键词拆分就好 </p>
