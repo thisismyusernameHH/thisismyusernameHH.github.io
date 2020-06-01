@@ -6,30 +6,31 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>如何绕过某985(母校)钢铁waf并拿下该系统 | Hexo</title>
+  <title>如何bypass变态waf并拿下站群 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="绕过万恶的waf并getshell">
+  <meta name="description" content="另辟蹊径巧妙绕过waf并拿下站群">
 <meta property="og:type" content="article">
-<meta property="og:title" content="如何绕过某985(母校)钢铁waf并拿下该系统">
-<meta property="og:url" content="http://yoursite.com/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/index.html">
+<meta property="og:title" content="如何bypass变态waf并拿下站群">
+<meta property="og:url" content="http://yoursite.com/2020/06/01/%E5%A6%82%E4%BD%95bypass%E5%8F%98%E6%80%81waf%E5%B9%B6%E6%8B%BF%E4%B8%8B%E7%AB%99%E7%BE%A4/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="绕过万恶的waf并getshell">
+<meta property="og:description" content="另辟蹊径巧妙绕过waf并拿下站群">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://yoursite.com/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/1.png">
-<meta property="og:image" content="http://yoursite.com/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/2.png">
-<meta property="og:image" content="http://yoursite.com/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/6.png">
-<meta property="og:image" content="http://yoursite.com/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/3.png">
-<meta property="og:image" content="http://yoursite.com/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/4.png">
-<meta property="og:image" content="http://yoursite.com/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/5.png">
-<meta property="og:image" content="http://yoursite.com/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/7.png">
-<meta property="og:image" content="http://yoursite.com/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/8.png">
-<meta property="og:image" content="http://yoursite.com/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/9.png">
-<meta property="article:published_time" content="2020-05-29T15:06:01.000Z">
-<meta property="article:modified_time" content="2020-05-30T15:08:48.651Z">
+<meta property="og:image" content="http://yoursite.com/2020/06/01/%E5%A6%82%E4%BD%95bypass%E5%8F%98%E6%80%81waf%E5%B9%B6%E6%8B%BF%E4%B8%8B%E7%AB%99%E7%BE%A4/1.png">
+<meta property="og:image" content="http://yoursite.com/2020/06/01/%E5%A6%82%E4%BD%95bypass%E5%8F%98%E6%80%81waf%E5%B9%B6%E6%8B%BF%E4%B8%8B%E7%AB%99%E7%BE%A4/2.png">
+<meta property="og:image" content="http://yoursite.com/2020/06/01/%E5%A6%82%E4%BD%95bypass%E5%8F%98%E6%80%81waf%E5%B9%B6%E6%8B%BF%E4%B8%8B%E7%AB%99%E7%BE%A4/3.png">
+<meta property="og:image" content="http://yoursite.com/2020/06/01/%E5%A6%82%E4%BD%95bypass%E5%8F%98%E6%80%81waf%E5%B9%B6%E6%8B%BF%E4%B8%8B%E7%AB%99%E7%BE%A4/4.png">
+<meta property="og:image" content="http://yoursite.com/2020/06/01/%E5%A6%82%E4%BD%95bypass%E5%8F%98%E6%80%81waf%E5%B9%B6%E6%8B%BF%E4%B8%8B%E7%AB%99%E7%BE%A4/10.png">
+<meta property="og:image" content="http://yoursite.com/2020/06/01/%E5%A6%82%E4%BD%95bypass%E5%8F%98%E6%80%81waf%E5%B9%B6%E6%8B%BF%E4%B8%8B%E7%AB%99%E7%BE%A4/5.png">
+<meta property="og:image" content="http://yoursite.com/2020/06/01/%E5%A6%82%E4%BD%95bypass%E5%8F%98%E6%80%81waf%E5%B9%B6%E6%8B%BF%E4%B8%8B%E7%AB%99%E7%BE%A4/6.png">
+<meta property="og:image" content="http://yoursite.com/2020/06/01/%E5%A6%82%E4%BD%95bypass%E5%8F%98%E6%80%81waf%E5%B9%B6%E6%8B%BF%E4%B8%8B%E7%AB%99%E7%BE%A4/7.png">
+<meta property="og:image" content="http://yoursite.com/2020/06/01/%E5%A6%82%E4%BD%95bypass%E5%8F%98%E6%80%81waf%E5%B9%B6%E6%8B%BF%E4%B8%8B%E7%AB%99%E7%BE%A4/8.png">
+<meta property="og:image" content="http://yoursite.com/2020/06/01/%E5%A6%82%E4%BD%95bypass%E5%8F%98%E6%80%81waf%E5%B9%B6%E6%8B%BF%E4%B8%8B%E7%AB%99%E7%BE%A4/9.png">
+<meta property="article:published_time" content="2020-06-01T06:25:46.000Z">
+<meta property="article:modified_time" content="2020-06-01T07:47:08.622Z">
 <meta property="article:author" content="阿欢">
 <meta property="article:tag" content="bypass">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/1.png">
+<meta name="twitter:image" content="http://yoursite.com/2020/06/01/%E5%A6%82%E4%BD%95bypass%E5%8F%98%E6%80%81waf%E5%B9%B6%E6%8B%BF%E4%B8%8B%E7%AB%99%E7%BE%A4/1.png">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -165,20 +166,20 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-如何日母校" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-如何bypass变态waf并拿下站群" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      如何绕过某985(母校)钢铁waf并拿下该系统
+      如何bypass变态waf并拿下站群
     </h1>
   
 
         
-        <a href="/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/" class="archive-article-date">
-  	<time datetime="2020-05-29T15:06:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-29</time>
+        <a href="/2020/06/01/%E5%A6%82%E4%BD%95bypass%E5%8F%98%E6%80%81waf%E5%B9%B6%E6%8B%BF%E4%B8%8B%E7%AB%99%E7%BE%A4/" class="archive-article-date">
+  	<time datetime="2020-06-01T06:25:46.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-01</time>
 </a>
         
       </header>
@@ -186,44 +187,28 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p><strong>前言</strong></p>
-<p>这个说来话长,先是学弟发现了弱口令,然后有可恶的waf，然后一起来绕一波,然后还有一波番外情节,先来描述一下番外情结</p>
-<p><strong>番外篇</strong><br>在渗透这个系统的过程中,我抓包在js发现了被注释掉的另外一个网站，手滑顺手访问之,发现竟然和我学校的这个平台一模一样,因为学校有waf所以我就先搞这个一样的平台，同样弱口令进入后台，任意文件上传，getshell 一气呵成 然后  绕了bypassdisable 用的是 </p>
-<p><a href="https://github.com/yangyangwithgnu/bypass_disablefunc_via_LD_PRELOAD" target="_blank" rel="noopener">https://github.com/yangyangwithgnu/bypass_disablefunc_via_LD_PRELOAD</a>  这个大哥的脚本 这位大哥我是真的佩服 他在freebuf发的文章我也全部看过,真的厉害 回到正题  getshell后我发现这竟然是运维的服务器,后面提了一波权,非常可惜的是,redis反弹root权限shell回来后,我添加完用户,退出shell 去连ssh 发现密码不对….. 同时 我ps -ef 看了一下 瞬间 我的心中有一万只草泥马飞过, 我想一拳锤爆电脑，….redis被打下线了….我苦苦等待了几天，还是没有上线,……机会一去不复返………….运维的机器上有很多宝藏,以后日站可以找找运维的站,一般都会搭建相同的环境，当然比最后线上的脆弱许多.<br>好了不bb太多了 说正文把</p>
-<a id="more"></a>
-<p><strong>正文</strong></p>
-<p>进后台后，找到上传点,首先我发现改后缀后重新发包生成的文件的后缀没有变化,我第一次后缀是.jpg 第二次改成.x 但是显示上传成功还是jpg 此时有一丝不安涌上心头</p>
-<p><img src="/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/1.png" alt="如何日母校"></p>
-<p>接着我想是不是上图中的moudle值影响   然后我改了moudle值 发包  咦  上传成功 然后返回文件还是jpg  不慌 继续<br>然后我改了文件内容 在一发包 嘿嘿 返回文件后缀变成 x了 此时 心中已经是胸有成竹(应该是判断了文件内容,一样的话就不变,之前也没注意文件名..只盯着后缀了) 好像已经日下来了一样(没想到后面绕waf饶了好久)……</p>
-<p>刚开始的时候 我发现只要一个包被waf检测到 那直接封几个小时…..我擦了…有这么变态的吗……………..然后第一天果断放弃 玩玩游戏什么的不香吗…..</p>
-<p>第二天晚上 有点无聊 打开burp 打开浏览器 访问之 , 这次我发包学聪明了,之前一发恶意包 然后wating 好久 然后connect reset 然后凉凉<br>这次我只要发现在waiting 我直接cancle 我发现这样竟然不会马上封我  可能因为 我提前断开连接了? 还是什么原因不知道 这样就可以继续fuzzing了</p>
-<p>刚开始尝试就给我当头一棒  waf直接检测 &lt;?php   不能出现php标签, 我想 这玩个屁, 只有用php短标签碰一碰运气了  关于php短标签 我是从百度上找的:<br>当解析一个文件时，PHP 会寻找起始和结束标记，也就是 &lt;?php 和 ?&gt;，这告诉 PHP 开始和停止解析二者之间的代码。此种解析方式使得 PHP 可以被嵌入到各种不同的文档中去，而任何起始和结束标记之外的部分都会被 PHP 解析器忽略。</p>
-<p>PHP 也允许使用短标记 &lt;? 和 ?&gt;，但不鼓励使用。只有通过激活 php.ini 中的 short_open_tag 配置指令或者在编译 PHP 时使用了配置选项 –enable-short-tags 时才能使用短标记</p>
-<p>因为需要开启一个配置选项 所以说只能是碰碰运气  没想到还真可以  发了个</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;? echo 1111 ?&gt;  </span><br></pre></td></tr></table></figure>
-<p>发现可以 讲到这儿又要说一下怎么绕过  filename=’xxxxx.php’ 这个地方waf的检测了,也就是如何上传php文件 开始试了几种  ‘xx.jpg.php’ ‘xxx.php.jpg’  截断 还有各种后缀 phtml pht php3 php4 Php<br>filename=’xxxxx.jpg’；filename=’xxxxx.php’ 还有几种奇奇怪怪的模式 等等发现都绕不过 这时候想起来从别人那学到的垃圾数据,你别说,垃圾数据真给力,我生成了20w个1,发包! 一发入魂,成功让waf崩溃或者说waf对filename的长度没有处理什么的 如下图:</p>
-<p><img src="/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/2.png" alt="如何日母校"></p>
-<p>接下来继续说php文件的内容如何绕过waf,经过漫长的尝试我发现   eval() 不能出现  而且很多函数 比如 file_get_contents() 都是不能直接出现的 不过有一些函数可以通过</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$a&#x3D;&quot;file_&quot;+&quot;get_&quot;+&quot;contents&quot;; $a();  </span><br></pre></td></tr></table></figure>  
-<p>这种方式来利用 但是不是所有函数都可以 什么 eval file_put_contents 都不行 本来准备利用 file_put_contents来写文件的这条路也不行了<br>还想到了 无字母shell<br><img src="/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/6.png" alt="如何日母校"><br>可惜直接传不行  需要在后面加一个左括号 (  或者 )  可能检测了括号的匹配对数  然后我尝试 注释掉多余的括号 但是发现 加了注释就绕不过了 ….<br>思考的时候,瞅了瞅以前绕waf的一些东西(所以说收集一些免杀东西什么还是有用的),直接放上去都不太行,不过我发现了一个比较关键的 那就是利用注释来进行混淆    几次尝试后发现 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eval(&#x2F;*-&#x2F;*-*&#x2F;$p&#x2F;*-&#x2F;*-*&#x2F;&#x2F;*-&#x2F;*-*&#x2F;&#x2F;*-&#x2F;*-*&#x2F;); </span><br></pre></td></tr></table></figure>
-<p>这个不会被拦截,终于,我看到了希望,只要eval不被拦,什么都有戏,然后就是  如何构造这个$p了 直接<br>从 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$p&#x3D;$\_GET[&#39;x&#39;];$p&#x3D;$\_POST[&#39;x&#39;];$p&#x3D;$\_SERVER[&#39;X&#39;] </span><br></pre></td></tr></table></figure> 这样都是不行会被封, 不过嘛还有 php//:input 关于php//:input流,我从百度找的介绍:<br>php://input :<br>php://input 是个可以访问请求的原始数据的只读流。 POST 请求的情况下，最好使用 php://input 来代替 $HTTP_RAW_POST_DATA</p>
-<p>通过他能获取参数就是  那么基本的小马就形成了  如下:</p>
-<p><img src="/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/3.png" alt="如何日母校"></p>
-<p>测试一下<br><img src="/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/4.png" alt="如何日母校"></p>
-<p>成功 发现disable了一些东西  刚开始也尝试过写cmd马 也没写成功 看来成功了也没用 给禁掉了</p>
-<p>然后直接 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file_put_contents(&#39;1.php&#39;,base64_decode(&#39;流量加密小马内容&#39;))</span><br></pre></td></tr></table></figure>  
-
-<p>还是我太天真了  直接给我封了 过不去   看来还需要一层加密  多加一层base64就ok </p>
-<p><img src="/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/5.png" alt="如何日母校"></p>
-<p>测试一下 </p>
-<p><img src="/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/7.png" alt="如何日母校">  </p>
-<p>nice! </p>
-<p>直接写流量加密小马!<br><img src="/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/8.png" alt="如何日母校"></p>
-<p>蚁剑访问之 看到了 绿色的连接成功 心中一丝舒爽涌上心头</p>
-<p><img src="/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/9.png" alt="如何日母校"></p>
-<p>写完这个博客 也12点过了 洗洗睡吧……………………………………</p>
-<p><strong>end</strong></p>
+<p>今天本来应该过6.1儿童节的,恰巧昨天和mrx渗透的一个站上传还没有绕过,早上mrx和我就开始重新看看,先说一下背景,首先通过弱口令进了后台,经过一番寻找发现了如下配置<br><img src="/2020/06/01/%E5%A6%82%E4%BD%95bypass%E5%8F%98%E6%80%81waf%E5%B9%B6%E6%8B%BF%E4%B8%8B%E7%AB%99%E7%BE%A4/1.png" alt="如何bypass变态waf并拿下站群"><br>看到这个,已经胸有成竹,接下来就是常规的加上php后缀,并且上传一波,于是我来了一发如下:<br><img src="/2020/06/01/%E5%A6%82%E4%BD%95bypass%E5%8F%98%E6%80%81waf%E5%B9%B6%E6%8B%BF%E4%B8%8B%E7%AB%99%E7%BE%A4/2.png" alt="如何bypass变态waf并拿下站群"><br>waiting了很久有waf检测 我直接 cancle了,接下来就是有趣的绕waf，我绕了3个小时,各种奇葩姿势都弄出来了,比如下图<br><img src="/2020/06/01/%E5%A6%82%E4%BD%95bypass%E5%8F%98%E6%80%81waf%E5%B9%B6%E6%8B%BF%E4%B8%8B%E7%AB%99%E7%BE%A4/3.png" alt="如何bypass变态waf并拿下站群"><br>都改成这个鬼样子了 还是过不鸟 尝试过各种一般用的过waf的方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line">1.jpg.php  1.php.jpg 1.php%00.jpg </span><br><span class="line"> filename&#x3D;1.jpg</span><br><span class="line"> filename&#x3D;1.php</span><br><span class="line"> Content-Disposition: form1-data; name&#x3D;&quot;Filedata&quot;; filename&#x3D;&quot;3.php&quot;</span><br><span class="line"> Content-Disposition: form-data; name&#x3D;&quot;filename&quot;; filename&#x3D;&quot;3.jpg&quot; .php</span><br><span class="line"> filename&#x3D;&quot;垃圾数据 20w&quot;.jpg.php</span><br></pre></td></tr></table></figure>
+<p> 因为系统是windwos的 利用windows特性 文件如果以::$DATA结果那么这部分自动会被去掉 所以配置允许后缀为php::$DATA,拿去发包,waf直接检测到,我改为 ::data 就可以发包但是返回保存出错,同理我利用? . 等windows特性尝试绕过(如果这些特殊字符比如? .  ! 等在文件名结尾的时候有一定几率被直接去掉),把这些特殊字符作为文件结尾进行尝试结果全部以失败告终,失败原因都是和下面这个图片一样<br> 尝试用长文件名截断同样失败<br> <img src="/2020/06/01/%E5%A6%82%E4%BD%95bypass%E5%8F%98%E6%80%81waf%E5%B9%B6%E6%8B%BF%E4%B8%8B%E7%AB%99%E7%BE%A4/4.png" alt="如何bypass变态waf并拿下站群"></p>
+<p> 等等等等 还尝试了各种后缀 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pht,php,phtml,php3,php4,php5,php6,php7,aspx,asmx,asp,jsp,jspx </span><br></pre></td></tr></table></figure>
+<p> 我的心情如下:<br> <img src="/2020/06/01/%E5%A6%82%E4%BD%95bypass%E5%8F%98%E6%80%81waf%E5%B9%B6%E6%8B%BF%E4%B8%8B%E7%AB%99%E7%BE%A4/10.png" alt="如何bypass变态waf并拿下站群"><br> 全都告以失败,弄到了前一天的晚上12点,还是拿不下,于是洗澡睡了………<br> 第二天 也就是 6.1儿童节 又开始一杯茶一包烟一个破站绕一天………</p>
+<p> <strong>正文</strong></p>
+<p> 其实前一天晚上我就想到了这种方法,但是嫌麻烦就没试,今天没办法了,实在是绕不过,于是尝试使用这种方法,利用内网ip或者是ip白名单来绕过waf，如果这两个服务器在同一个内网,那么他们之间互相访问可能并不会经过waf在的服务器,又或者是白名单的原因导致这样有可能绕过waf，因为之前拿过和这个站同属一个体系的另外一个站,所以我想试试这种方法,我在已经拿到shell的那个站上(可以出网)，ping 现在这个站 解析的ip 并不是内网ip 心中有一丝灰暗掠过….管他的,只有试试了,说明一下已经被getshell的站我称为A站，A站为linux环境,现在这个还没拿下的称为B站.<br> 首先我要在A站上弄一个socks代理 然后通过这个代理我去访问B站,然后上传,因为已经getshell的站是在内网,所以我先尝试用web代理,用的是这个Neo-reGeorg，流量加密版 reGeorg,但是用之前我就感觉成功率不高,因为php版本的这个代理不是很好用,之前没有使用成功过,不过asp,aspx的倒是很好用,我将本地端口8888与A站上的tunnel.php 建立连接 然后我用burp走 8888 端口,结果失败,连接有问题,这是预料之中的,那就换一种代理方法,既然可以出网,可以用ew 让他 与我的公网vps 建立连接，然后我通过我的vps对应的端口走代理,这里就不详述了,因为当时觉得这种方法比较麻烦,既然我已经有一个shell并且可以执行命令了,而且有curl，那我为什么不直接通过curl 来发post包上传呢 于是搜索了一下curl的使用方法,如果要用curl传文件 必须要用 -F 选项  使用了-F参数，curl会以multipart/form-data的方式发送POST请求。-F以key=value的形式指定要上传的参数，如果是文件，则需要使用key=@file的形式</p>
+<p> 然后现在我的vps上测试了一下直接给B站发上传包成功了,ok,咱们直接上A站发包</p>
+<p> sessid=1590980086 和 moudl=content 都是上传包需要的<br><img src="/2020/06/01/%E5%A6%82%E4%BD%95bypass%E5%8F%98%E6%80%81waf%E5%B9%B6%E6%8B%BF%E4%B8%8B%E7%AB%99%E7%BE%A4/5.png" alt="如何bypass变态waf并拿下站群"></p>
+<p> 可以看见我们成功绕过了waf，因为之前上传如果是php后缀都是直接封掉不会有返回包，现在没有被封,说明已经绕过了waf，这两台机器应该在同一内网,但是为什么会出现上传类型不允许呢,而且我已经在配置中设置了允许php后缀,如果看过我前面审计发卡平台文章的兄弟应该已经明白了，虽然设置了允许php后缀,但是我猜测后台应该是大概长个样子:<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">  $store&#x3D;[&#39;jpg&#39;,&#39;png&#39;,&#39;php&#39;]  #类似这样 如果我设置了运行php 那么 php就会被加入这个数组  $ext视为获取的文件后缀名</span><br><span class="line"> if(in_array($ext,$store)&amp;&amp;$ext!&#x3D;&quot;php&quot;&amp;&amp;$ext!&#x3D;&quot;php3&quot;&amp;&amp;$ext!&#x3D;&quot;pht&quot;...)&#123; 类似这样</span><br><span class="line">     上传操作</span><br><span class="line">&#125; else&#123;</span><br><span class="line">echo &quot;上传类型不允许&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> </p>
+<p> 这样子的话就很好绕过了,在windwos条件下 文件名称最后如果有空格那么是会被去掉的,利用这个特性就可以轻松绕过，配置一下允许上传的后缀</p>
+<p><img src="/2020/06/01/%E5%A6%82%E4%BD%95bypass%E5%8F%98%E6%80%81waf%E5%B9%B6%E6%8B%BF%E4%B8%8B%E7%AB%99%E7%BE%A4/6.png" alt="如何bypass变态waf并拿下站群"></p>
+<p>  然后上传</p>
+<p><img src="/2020/06/01/%E5%A6%82%E4%BD%95bypass%E5%8F%98%E6%80%81waf%E5%B9%B6%E6%8B%BF%E4%B8%8B%E7%AB%99%E7%BE%A4/7.png" alt="如何bypass变态waf并拿下站群"></p>
+<p> 到这里我以为基本已经拿下  访问之 没想到404  难道没传上去?  于是我把php 换成了p 方法完全一样 在配置中增加 p空格 然后上传 访问发现是成功去掉最后的空格并且上传成功了的 那应该就是设置了配置文件 设置某个目录下 访问php文件就返回 404 那这时候需要跨目录去别的目录,我发现上传包中的 module参数的值 content是被放到了 上传后的文件路径中 我加入 ../ 发包 一发入魂 成功跨目录</p>
+<p><img src="/2020/06/01/%E5%A6%82%E4%BD%95bypass%E5%8F%98%E6%80%81waf%E5%B9%B6%E6%8B%BF%E4%B8%8B%E7%AB%99%E7%BE%A4/8.png" alt="如何bypass变态waf并拿下站群"></p>
+<p>蚁剑访问之 看到了 绿色的成功连接 心中一丝舒爽……..</p>
+<p>站群的截图就不放了 执行命令一发whoami 哦哟</p>
+<p><img src="/2020/06/01/%E5%A6%82%E4%BD%95bypass%E5%8F%98%E6%80%81waf%E5%B9%B6%E6%8B%BF%E4%B8%8B%E7%AB%99%E7%BE%A4/9.png" alt="如何bypass变态waf并拿下站群"></p>
+<p>** end **</p>
+<p>我靠…太阳怎么晒到屁股上了…………醒了….嘴边的口水流了好多，应该是做了个复杂的梦把,懂得都懂…….</p>
 
       
 
@@ -265,17 +250,6 @@
 	</div>
 
       
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/绕过狗日的waf//" class="article-tag-list-link color4">绕过狗日的waf</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
 
       
 
@@ -325,7 +299,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/06/01/%E5%A6%82%E4%BD%95bypass%E5%8F%98%E6%80%81waf%E5%B9%B6%E6%8B%BF%E4%B8%8B%E7%AB%99%E7%BE%A4/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -339,18 +313,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2020/06/01/%E5%A6%82%E4%BD%95bypass%E5%8F%98%E6%80%81waf%E5%B9%B6%E6%8B%BF%E4%B8%8B%E7%AB%99%E7%BE%A4/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          如何bypass变态waf并拿下站群
-        
-      </div>
-    </a>
   
-  
-    <a href="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">getshell 某发卡平台</div>
+    <a href="/2020/05/29/%E5%A6%82%E4%BD%95%E6%97%A5%E6%AF%8D%E6%A0%A1/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">如何绕过某985(母校)钢铁waf并拿下该系统</div>
       <i class="icon-circle-right"></i>
     </a>
   
