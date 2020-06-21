@@ -152,6 +152,109 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-讨论讨论如何绕基于语义的waf" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/20/%E8%AE%A8%E8%AE%BA%E8%AE%A8%E8%AE%BA%E5%A6%82%E4%BD%95%E7%BB%95%E5%9F%BA%E4%BA%8E%E8%AF%AD%E4%B9%89%E7%9A%84waf/">讨论讨论如何绕基于语义的waf</a>
+    </h1>
+  
+
+        
+        <a href="/2020/06/20/%E8%AE%A8%E8%AE%BA%E8%AE%A8%E8%AE%BA%E5%A6%82%E4%BD%95%E7%BB%95%E5%9F%BA%E4%BA%8E%E8%AF%AD%E4%B9%89%E7%9A%84waf/" class="archive-article-date">
+  	<time datetime="2020-06-20T14:57:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-20</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>前言</strong></p>
+<p>某众测项目,绕过基于语义的waf,主要来说就是上传内容绕过,还有一个代码注入,代码注入的很好绕过,就不讲了,因为公司有要求,所以我就不放众测地址了,如果能够回显任意字符都是有奖金的,我就想写一写这几天绕这种waf的思考,如果有大哥想交流交流的可以加我qq 1274754948，不过我感觉我的博客是没什么人看了…………   我主要在研究 一个 php5.2版本的绕过 和 php7.3版本的绕过(针对文件内容的),这也是我第一次遇到真正基于语义的waf，很多次我都直接裂开…….好了进入正文</p>
+<p><strong>正文</strong></p>
+<p>我首先硬刚 php7.3 版本的waf,上了就是一把嗦,用了各种以前常常用的payload,很快我发现了一个现象,基于语义的waf的确挺高端,一旦判断到你的语法有问题,直接让你过,不会拦你,但是只要有函数的执行,直接干掉你,你可以执行各种赋值语句,但是一旦涉及到函数的执行,直接给你封掉,这时候我就在思考,要如何绕这种高端waf呢,我觉得这也是以后waf的一个趋势,先积累点经验,于是我去找php5 到 php7 各种废弃或者新增的功能,比如php7新增的 ?? 运算符  我尝试用  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line">&lt;?php  0?0:var_dump(1)??2;   </span><br></pre></td></tr></table></figure> 
+<p>去显示字符 不过也被封了 在尝试过程中我发现了php 的一些特性 真的挺灵活比如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">6   ;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;</span><br><span class="line">var_dump(1)&amp;&amp;exit(#); xas</span><br><span class="line">&#x2F;&#x2F;\echo</span><br><span class="line">)</span><br><span class="line">?&gt;?&gt;?&gt;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure> 
+<p>这样也是没问题的  还有</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">6   ;echo </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#x2F;*</span><br><span class="line"></span><br><span class="line">*&#x2F;</span><br><span class="line">&#x2F;&#x2F;</span><br><span class="line">&#x2F;&#x2F;</span><br><span class="line"></span><br><span class="line">1</span><br><span class="line"></span><br><span class="line">?&gt;?&gt;?&gt;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure> 
+<p>还有</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">6   ;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;</span><br><span class="line">var_dump(1)&amp;&amp;exit(#); xas</span><br><span class="line">&#x2F;&#x2F;\echo</span><br><span class="line">-</span><br><span class="line">-</span><br><span class="line">-</span><br><span class="line">-+</span><br><span class="line">-</span><br><span class="line">-</span><br><span class="line">-</span><br><span class="line">-</span><br><span class="line">-</span><br><span class="line">1</span><br><span class="line">-</span><br><span class="line">-</span><br><span class="line">-</span><br><span class="line">-</span><br><span class="line">-</span><br><span class="line">-</span><br><span class="line">2</span><br><span class="line">)</span><br><span class="line">?&gt;?&gt;?&gt;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure> 
+<p>还有利用根命名空间执行 命令比如  \var_dump(1)<br>都是能成功执行的 可是一发包就被检测到 …真难    我感觉想要绕过的话就得找到 语义检测漏掉的规则 让他认为这个语法出错 然后这个语法在php 7.3 实际要是能够执行的,这个真的很难找,我盯着php5 与 php7的特性也没找到什么突破口,希望有大佬和我交流交流思路……….<br>我尝试到 \echo 1;的时候竟然发包过了,然而我在本地测试了一下 语法有问题直接error…… 为什么var_dump可以然而 echo 却不行呢 我发现是因为 语言结构的问题 echo 是php中的语言结构而不是函数 但是这个特性在php5.2中却可以成功执行并且只报warning的错误,所以可以利用这个绕过php5.2的waf，这个语义检测真是够聪明的…..   </p>
+<p><strong>待补充的一些思路</strong></p>
+<p>既然\var_dump(1) 这种能够执行 那么在函数前加其他字符会怎么样呢,于是我把ascii码 0-255的字符都试了试,php5.2还是比较好饶过 除了很多不可见字符不会影响函数的执行 甚至还有 ‘ 单引号 不会影响函数的执行比如  ‘ \echo 111111111; 在php5.2 中是可以成功执行的 先不写了 打游戏去了……下次接着写</p>
+<p>我来了 继续     &lt;0x01&gt;\var_dump(1)  这种是能够正常执行的在php5 和 7 中 但是waf检测了   我陷入了僵局 </p>
+<p>hahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhv</p>
+<p>绕过了 哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟vv!!!! nice 哦 兄嘚</p>
+<p>简直无敌!!!!!!!!!!!!!!!!!</p>
+<p>经过我5天的寻寻觅觅我终于绕过了 功夫不负有心人啊  多搜php 各种特性</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">基于语义的waf</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/高端waf//" class="article-tag-list-link color1">高端waf</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/06/20/%E8%AE%A8%E8%AE%BA%E8%AE%A8%E8%AE%BA%E5%A6%82%E4%BD%95%E7%BB%95%E5%9F%BA%E4%BA%8E%E8%AF%AD%E4%B9%89%E7%9A%84waf/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-如何bypass变态waf并拿下站群" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -321,6 +424,97 @@
 
 
   
+    <article id="post-test" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/30/test/">emmmmmmm-一次bypass</a>
+    </h1>
+  
+
+        
+        <a href="/2020/03/30/test/" class="archive-article-date">
+  	<time datetime="2020-03-30T09:14:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-30</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>前言</strong></p>
+<p>本次绕过waf是因为之前拿了某个厂商的源码,发现了新的洞洞,所以对之前没有拿下来的一个系统的再次日日日(某985大学waf)…………….</p>
+<p>基本情况是可以写入aspx文件  需要绕过waf</p>
+<p><strong>困难重重</strong></p>
+<p>自己尝试的时候 找了很多免杀小马 统统不得劲  这个waf 检测了很多关键字  什么 request  creatobject   write(…) 等等 经过一个晚上和上午的战斗 还是拿不下来， 于是找了位大哥帮忙，大哥果然是大哥，发现了http参数污染</p>
+        
+          <a class="article-more-a" href="/2020/03/30/test/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">bypass</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/bypassdog//" class="article-tag-list-link color5">bypassdog</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/03/30/test/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-getshell-某发卡平台" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -384,97 +578,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-test" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/30/test/">emmmmmmm-一次bypass</a>
-    </h1>
-  
-
-        
-        <a href="/2020/03/30/test/" class="archive-article-date">
-  	<time datetime="2020-03-30T09:14:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-30</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>前言</strong></p>
-<p>本次绕过waf是因为之前拿了某个厂商的源码,发现了新的洞洞,所以对之前没有拿下来的一个系统的再次日日日(某985大学waf)…………….</p>
-<p>基本情况是可以写入aspx文件  需要绕过waf</p>
-<p><strong>困难重重</strong></p>
-<p>自己尝试的时候 找了很多免杀小马 统统不得劲  这个waf 检测了很多关键字  什么 request  creatobject   write(…) 等等 经过一个晚上和上午的战斗 还是拿不下来， 于是找了位大哥帮忙，大哥果然是大哥，发现了http参数污染</p>
-        
-          <a class="article-more-a" href="/2020/03/30/test/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">bypass</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/bypassdog//" class="article-tag-list-link color5">bypassdog</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/03/30/test/">展开全文 >></a>
         </p>
       
 
@@ -597,11 +700,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">审计</a>
+                <a href="javascript:void(0)" class="js-tag color2">bypass</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">bypass</a>
+                <a href="javascript:void(0)" class="js-tag color4">基于语义的waf</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">审计</a>
               </li>
             
             <div class="clearfix"></div>

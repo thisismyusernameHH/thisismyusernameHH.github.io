@@ -6,14 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Category: bypassdog | Hexo</title>
+  <title>讨论讨论如何绕基于语义的waf | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/categories/bypassdog/index.html">
+  <meta name="description" content="前言 某众测项目,绕过基于语义的waf,主要来说就是上传内容绕过,还有一个代码注入,代码注入的很好绕过,就不讲了,因为公司有要求,所以我就不放众测地址了,如果能够回显任意字符都是有奖金的,我就想写一写这几天绕这种waf的思考,如果有大哥想交流交流的可以加我qq 1274754948，不过我感觉我的博客是没什么人看了…………   我主要在研究 一个 php5.2版本的绕过 和 php7.3版本的绕过">
+<meta property="og:type" content="article">
+<meta property="og:title" content="讨论讨论如何绕基于语义的waf">
+<meta property="og:url" content="http://yoursite.com/2020/06/20/%E8%AE%A8%E8%AE%BA%E8%AE%A8%E8%AE%BA%E5%A6%82%E4%BD%95%E7%BB%95%E5%9F%BA%E4%BA%8E%E8%AF%AD%E4%B9%89%E7%9A%84waf/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言 某众测项目,绕过基于语义的waf,主要来说就是上传内容绕过,还有一个代码注入,代码注入的很好绕过,就不讲了,因为公司有要求,所以我就不放众测地址了,如果能够回显任意字符都是有奖金的,我就想写一写这几天绕这种waf的思考,如果有大哥想交流交流的可以加我qq 1274754948，不过我感觉我的博客是没什么人看了…………   我主要在研究 一个 php5.2版本的绕过 和 php7.3版本的绕过">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-06-20T14:57:37.000Z">
+<meta property="article:modified_time" content="2020-06-21T01:42:37.274Z">
 <meta property="article:author" content="阿欢">
+<meta property="article:tag" content="基于语义的waf">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -150,71 +155,196 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-讨论讨论如何绕基于语义的waf" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/30/test/" class="archive-article-date">
-  	<time datetime="2020-03-30T09:14:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-30</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/30/test/">emmmmmmm-一次bypass</a>
+    <h1 class="article-title" itemprop="name">
+      讨论讨论如何绕基于语义的waf
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2020/06/20/%E8%AE%A8%E8%AE%BA%E8%AE%A8%E8%AE%BA%E5%A6%82%E4%BD%95%E7%BB%95%E5%9F%BA%E4%BA%8E%E8%AF%AD%E4%B9%89%E7%9A%84waf/" class="archive-article-date">
+  	<time datetime="2020-06-20T14:57:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-20</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>前言</strong></p>
+<p>某众测项目,绕过基于语义的waf,主要来说就是上传内容绕过,还有一个代码注入,代码注入的很好绕过,就不讲了,因为公司有要求,所以我就不放众测地址了,如果能够回显任意字符都是有奖金的,我就想写一写这几天绕这种waf的思考,如果有大哥想交流交流的可以加我qq 1274754948，不过我感觉我的博客是没什么人看了…………   我主要在研究 一个 php5.2版本的绕过 和 php7.3版本的绕过(针对文件内容的),这也是我第一次遇到真正基于语义的waf，很多次我都直接裂开…….好了进入正文</p>
+<p><strong>正文</strong></p>
+<p>我首先硬刚 php7.3 版本的waf,上了就是一把嗦,用了各种以前常常用的payload,很快我发现了一个现象,基于语义的waf的确挺高端,一旦判断到你的语法有问题,直接让你过,不会拦你,但是只要有函数的执行,直接干掉你,你可以执行各种赋值语句,但是一旦涉及到函数的执行,直接给你封掉,这时候我就在思考,要如何绕这种高端waf呢,我觉得这也是以后waf的一个趋势,先积累点经验,于是我去找php5 到 php7 各种废弃或者新增的功能,比如php7新增的 ?? 运算符  我尝试用  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line">&lt;?php  0?0:var_dump(1)??2;   </span><br></pre></td></tr></table></figure> 
+<p>去显示字符 不过也被封了 在尝试过程中我发现了php 的一些特性 真的挺灵活比如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">6   ;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;</span><br><span class="line">var_dump(1)&amp;&amp;exit(#); xas</span><br><span class="line">&#x2F;&#x2F;\echo</span><br><span class="line">)</span><br><span class="line">?&gt;?&gt;?&gt;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure> 
+<p>这样也是没问题的  还有</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">6   ;echo </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#x2F;*</span><br><span class="line"></span><br><span class="line">*&#x2F;</span><br><span class="line">&#x2F;&#x2F;</span><br><span class="line">&#x2F;&#x2F;</span><br><span class="line"></span><br><span class="line">1</span><br><span class="line"></span><br><span class="line">?&gt;?&gt;?&gt;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure> 
+<p>还有</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">6   ;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;</span><br><span class="line">var_dump(1)&amp;&amp;exit(#); xas</span><br><span class="line">&#x2F;&#x2F;\echo</span><br><span class="line">-</span><br><span class="line">-</span><br><span class="line">-</span><br><span class="line">-+</span><br><span class="line">-</span><br><span class="line">-</span><br><span class="line">-</span><br><span class="line">-</span><br><span class="line">-</span><br><span class="line">1</span><br><span class="line">-</span><br><span class="line">-</span><br><span class="line">-</span><br><span class="line">-</span><br><span class="line">-</span><br><span class="line">-</span><br><span class="line">2</span><br><span class="line">)</span><br><span class="line">?&gt;?&gt;?&gt;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure> 
+<p>还有利用根命名空间执行 命令比如  \var_dump(1)<br>都是能成功执行的 可是一发包就被检测到 …真难    我感觉想要绕过的话就得找到 语义检测漏掉的规则 让他认为这个语法出错 然后这个语法在php 7.3 实际要是能够执行的,这个真的很难找,我盯着php5 与 php7的特性也没找到什么突破口,希望有大佬和我交流交流思路……….<br>我尝试到 \echo 1;的时候竟然发包过了,然而我在本地测试了一下 语法有问题直接error…… 为什么var_dump可以然而 echo 却不行呢 我发现是因为 语言结构的问题 echo 是php中的语言结构而不是函数 但是这个特性在php5.2中却可以成功执行并且只报warning的错误,所以可以利用这个绕过php5.2的waf，这个语义检测真是够聪明的…..   </p>
+<p><strong>待补充的一些思路</strong></p>
+<p>既然\var_dump(1) 这种能够执行 那么在函数前加其他字符会怎么样呢,于是我把ascii码 0-255的字符都试了试,php5.2还是比较好饶过 除了很多不可见字符不会影响函数的执行 甚至还有 ‘ 单引号 不会影响函数的执行比如  ‘ \echo 111111111; 在php5.2 中是可以成功执行的 先不写了 打游戏去了……下次接着写</p>
+<p>我来了 继续     &lt;0x01&gt;\var_dump(1)  这种是能够正常执行的在php5 和 7 中 但是waf检测了   我陷入了僵局 </p>
+<p>hahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhv</p>
+<p>绕过了 哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟哦哟vv!!!! nice 哦 兄嘚</p>
+<p>简直无敌!!!!!!!!!!!!!!!!!</p>
+<p>经过我5天的寻寻觅觅我终于绕过了 功夫不负有心人啊  多搜php 各种特性</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">bypass</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">基于语义的waf</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/bypassdog//" class="article-tag-list-link color5">bypassdog</a>
+        			<a href="/categories/高端waf//" class="article-tag-list-link color1">高端waf</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/06/20/%E8%AE%A8%E8%AE%BA%E8%AE%A8%E8%AE%BA%E5%A6%82%E4%BD%95%E7%BB%95%E5%9F%BA%E4%BA%8E%E8%AF%AD%E4%B9%89%E7%9A%84waf/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2020/06/01/%E5%A6%82%E4%BD%95bypass%E5%8F%98%E6%80%81waf%E5%B9%B6%E6%8B%BF%E4%B8%8B%E7%AB%99%E7%BE%A4/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">如何bypass变态waf并拿下站群</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -237,10 +367,10 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
-		isCategory: true,
+		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
 		root: "/",
