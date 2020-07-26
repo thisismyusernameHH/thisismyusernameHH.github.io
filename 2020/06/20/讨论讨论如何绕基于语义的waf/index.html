@@ -6,22 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>讨论讨论如何绕基于语义的waf | Hexo</title>
+  <title>讨论讨论如何绕基于语义的waf | 哇咔咔-_-齐衡三</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="前言 某众测项目,绕过基于语义的waf,主要来说就是上传内容绕过,还有一个代码注入,代码注入的很好绕过,就不讲了,因为公司有要求,所以我就不放众测地址了,如果能够回显任意字符都是有奖金的,我就想写一写这几天绕这种waf的思考,如果有大哥想交流交流的可以加我qq 1274754948，不过我感觉我的博客是没什么人看了…………   我主要在研究 一个 php5.2版本的绕过 和 php7.3版本的绕过">
+  <meta name="description" content="前言 某众测项目,绕过基于语义的waf,主要来说就是上传内容绕过,还有一个代码注入,代码注入的很好绕过,就不讲了,因为是内部的我就不放众测地址了,如果能够回显任意字符都是有奖金的,我就想写一写这几天绕这种waf的思考,如果有大哥想交流交流的可以加我qq 1274754948，不过我感觉我的博客是没什么人看了…………   我主要在研究 一个 php5.2版本的绕过 和 php7.3版本的绕过(针对文">
 <meta property="og:type" content="article">
 <meta property="og:title" content="讨论讨论如何绕基于语义的waf">
 <meta property="og:url" content="http://yoursite.com/2020/06/20/%E8%AE%A8%E8%AE%BA%E8%AE%A8%E8%AE%BA%E5%A6%82%E4%BD%95%E7%BB%95%E5%9F%BA%E4%BA%8E%E8%AF%AD%E4%B9%89%E7%9A%84waf/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="前言 某众测项目,绕过基于语义的waf,主要来说就是上传内容绕过,还有一个代码注入,代码注入的很好绕过,就不讲了,因为公司有要求,所以我就不放众测地址了,如果能够回显任意字符都是有奖金的,我就想写一写这几天绕这种waf的思考,如果有大哥想交流交流的可以加我qq 1274754948，不过我感觉我的博客是没什么人看了…………   我主要在研究 一个 php5.2版本的绕过 和 php7.3版本的绕过">
+<meta property="og:site_name" content="哇咔咔-_-齐衡三">
+<meta property="og:description" content="前言 某众测项目,绕过基于语义的waf,主要来说就是上传内容绕过,还有一个代码注入,代码注入的很好绕过,就不讲了,因为是内部的我就不放众测地址了,如果能够回显任意字符都是有奖金的,我就想写一写这几天绕这种waf的思考,如果有大哥想交流交流的可以加我qq 1274754948，不过我感觉我的博客是没什么人看了…………   我主要在研究 一个 php5.2版本的绕过 和 php7.3版本的绕过(针对文">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-06-20T14:57:37.000Z">
-<meta property="article:modified_time" content="2020-06-21T01:42:37.274Z">
+<meta property="article:modified_time" content="2020-06-21T01:54:18.805Z">
 <meta property="article:author" content="阿欢">
 <meta property="article:tag" content="基于语义的waf">
 <meta name="twitter:card" content="summary">
   
-    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="哇咔咔-_-齐衡三" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -176,9 +176,10 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p><strong>前言</strong></p>
-<p>某众测项目,绕过基于语义的waf,主要来说就是上传内容绕过,还有一个代码注入,代码注入的很好绕过,就不讲了,因为公司有要求,所以我就不放众测地址了,如果能够回显任意字符都是有奖金的,我就想写一写这几天绕这种waf的思考,如果有大哥想交流交流的可以加我qq 1274754948，不过我感觉我的博客是没什么人看了…………   我主要在研究 一个 php5.2版本的绕过 和 php7.3版本的绕过(针对文件内容的),这也是我第一次遇到真正基于语义的waf，很多次我都直接裂开…….好了进入正文</p>
+<p>某众测项目,绕过基于语义的waf,主要来说就是上传内容绕过,还有一个代码注入,代码注入的很好绕过,就不讲了,因为是内部的我就不放众测地址了,如果能够回显任意字符都是有奖金的,我就想写一写这几天绕这种waf的思考,如果有大哥想交流交流的可以加我qq 1274754948，不过我感觉我的博客是没什么人看了…………   我主要在研究 一个 php5.2版本的绕过 和 php7.3版本的绕过(针对文件内容的),这也是我第一次遇到真正基于语义的waf，很多次我都直接裂开…….好了进入正文</p>
 <p><strong>正文</strong></p>
-<p>我首先硬刚 php7.3 版本的waf,上了就是一把嗦,用了各种以前常常用的payload,很快我发现了一个现象,基于语义的waf的确挺高端,一旦判断到你的语法有问题,直接让你过,不会拦你,但是只要有函数的执行,直接干掉你,你可以执行各种赋值语句,但是一旦涉及到函数的执行,直接给你封掉,这时候我就在思考,要如何绕这种高端waf呢,我觉得这也是以后waf的一个趋势,先积累点经验,于是我去找php5 到 php7 各种废弃或者新增的功能,比如php7新增的 ?? 运算符  我尝试用  </p>
+<p>我首先硬刚 php7.3 版本的waf,上了就是一把嗦,用了各种以前常常用的payload,很快我发现了一个现象,基于语义的waf的确挺高端,一旦判断到你的语法有问题,直接让你过,不会拦你,但是只要有函数的执行,直接干掉你,你可以执行各种赋值语句,但是一旦涉及到函数的执行,直接给你封掉,这时候我就在思考,要如何绕这种高端waf呢,我觉得这也是以后waf的一个趋势,先积累点经验,于是我去找php5 到 php7 各种废弃或者新增的功能,比如php7新增的 ?? 运算符  我尝试用</p>
+<a id="more"></a>  
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line">&lt;?php  0?0:var_dump(1)??2;   </span><br></pre></td></tr></table></figure> 
 <p>去显示字符 不过也被封了 在尝试过程中我发现了php 的一些特性 真的挺灵活比如</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">6   ;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;</span><br><span class="line">var_dump(1)&amp;&amp;exit(#); xas</span><br><span class="line">&#x2F;&#x2F;\echo</span><br><span class="line">)</span><br><span class="line">?&gt;?&gt;?&gt;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure> 
@@ -309,6 +310,15 @@
   
 <nav id="article-nav">
   
+    <a href="/2020/07/25/%E5%AE%9E%E6%88%98%E7%BB%95%E8%BF%87%E5%8F%8C%E9%87%8Dwaf%E6%B3%A8%E5%85%A5%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          实战绕过双重waf注入获取数据
+        
+      </div>
+    </a>
+  
   
     <a href="/2020/06/01/%E5%A6%82%E4%BD%95bypass%E5%8F%98%E6%80%81waf%E5%B9%B6%E6%8B%BF%E4%B8%8B%E7%AB%99%E7%BE%A4/" id="article-nav-older" class="article-nav-link-wrap">
       <div class="article-nav-title">如何bypass变态waf并拿下站群</div>
@@ -438,6 +448,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">bypass</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">注入bypass</a>
               </li>
              
               <li class="article-tag-list-item">
