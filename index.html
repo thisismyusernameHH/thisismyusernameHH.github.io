@@ -152,6 +152,110 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-没人比我更懂绕waf之一点寒芒先到随后枪出如龙" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/08/02/%E6%B2%A1%E4%BA%BA%E6%AF%94%E6%88%91%E6%9B%B4%E6%87%82%E7%BB%95waf%E4%B9%8B%E4%B8%80%E7%82%B9%E5%AF%92%E8%8A%92%E5%85%88%E5%88%B0%E9%9A%8F%E5%90%8E%E6%9E%AA%E5%87%BA%E5%A6%82%E9%BE%99/">没人比我更懂绕waf之一点寒芒先到随后枪出如龙</a>
+    </h1>
+  
+
+        
+        <a href="/2020/08/02/%E6%B2%A1%E4%BA%BA%E6%AF%94%E6%88%91%E6%9B%B4%E6%87%82%E7%BB%95waf%E4%B9%8B%E4%B8%80%E7%82%B9%E5%AF%92%E8%8A%92%E5%85%88%E5%88%B0%E9%9A%8F%E5%90%8E%E6%9E%AA%E5%87%BA%E5%A6%82%E9%BE%99/" class="archive-article-date">
+  	<time datetime="2020-08-02T11:53:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>前言</strong></p>
+<p>同事遇到一个站有注入,然后有waf，waf检测了一些关键字不是很好弄,于是丢给了我,所以有了这次的故事,话不多说,我们直接进入正题。</p>
+<p><strong>First Step</strong></p>
+<p>如果遇到注入首先第一步是干啥呢,我一般先判断后台数据库类型,所以我们先来说一下判断数据库类型的几种常用方法,要判断是什么类型的数据库当然要利用不同数据库各自独特的特点,此处就讨论比较常见的oracle,mssql,mysql不针对access数据库,这个access比较刚,我玩不过他.</p>
+<p>利用mssql特有的延时方法  waitfor delay  payload如下:<br>id=1’;waitfor delay ‘0:0:5’ –<br>如果上面这个payload发了之后 成功演延时了5s 那么可以确定后端数据库是mssql<br>利用Mssql特有的 top 关键词来判断 TOP 子句用于规定要返回的记录的数目  所以可以利用如下payload判断是否mssql<br> id=1’ and (select top 1 ‘aaa’)=’aaa<br>mssql 可以通过特殊的爆错 Microsoft ODBC Database Engine 错误 识别</p>
+<p>mssql 通过特有的系统表 sysobjects 识别</p>
+<p>id=1’ and (select count(*) from sysobjects)&gt;0 and ‘1’=’1</p>
+<p>current_user函数  current_user 返回当前数据库的所有者,授权者 这个函数mssql 和 oracle mysql都有<br>在mssql中 可以用来判断是否是dba 权限   如果是dba select current_user 的返回值就是 dba<br>在oracle中 经过我实测 发现<br>select current_user from dual 的效果等于  select user from dual<br>都是查看当前数据库的用户<br><img src="/2020/08/02/%E6%B2%A1%E4%BA%BA%E6%AF%94%E6%88%91%E6%9B%B4%E6%87%82%E7%BB%95waf%E4%B9%8B%E4%B8%80%E7%82%B9%E5%AF%92%E8%8A%92%E5%85%88%E5%88%B0%E9%9A%8F%E5%90%8E%E6%9E%AA%E5%87%BA%E5%A6%82%E9%BE%99/1.png" alt="没人比我更懂绕waf之一点寒芒先到随后枪出如龙"><br>mysql中效果与 select user() 效果一致</p>
+<p>利用字符串连接方式判断:<br>在mysql中 字符串连接可以用  select ‘a’ ‘bc’ ;  结果就是  abc<br>oracle中  字符串连接是利用||  select ‘a’ || ‘bc’ 结果是 abc<br>在mssql中  字符串连接利用+   select ‘a’+’bc’ 结果是 abc   这三种   这三种字符串连接方法都是各自独特的 可以很好的区分不同数据库</p>
+<p>mysql中#是作为注释符的 而且是Mysql独有 利用#可以判断后台是否mysql  例如:<br>id=1’ and 1=1 #<br>mysql中需要–空格才是单行注释如果只有–是语法不对的 而在mssql 和 mssql 中 –都是单行注释<br>mysql特有的函数 CURRENT_DATE<br>select CURRENT_DATE ;<br>id=1’ and (select CURRENT_DATE)=’aaa<br><img src="/2020/08/02/%E6%B2%A1%E4%BA%BA%E6%AF%94%E6%88%91%E6%9B%B4%E6%87%82%E7%BB%95waf%E4%B9%8B%E4%B8%80%E7%82%B9%E5%AF%92%E8%8A%92%E5%85%88%E5%88%B0%E9%9A%8F%E5%90%8E%E6%9E%AA%E5%87%BA%E5%A6%82%E9%BE%99/2.png" alt="没人比我更懂绕waf之一点寒芒先到随后枪出如龙"><br>mysql 特有的 now函数</p>
+<p>id=1’ and (select now())=’aaa</p>
+<p><img src="/2020/08/02/%E6%B2%A1%E4%BA%BA%E6%AF%94%E6%88%91%E6%9B%B4%E6%87%82%E7%BB%95waf%E4%B9%8B%E4%B8%80%E7%82%B9%E5%AF%92%E8%8A%92%E5%85%88%E5%88%B0%E9%9A%8F%E5%90%8E%E6%9E%AA%E5%87%BA%E5%A6%82%E9%BE%99/3.png" alt="没人比我更懂绕waf之一点寒芒先到随后枪出如龙"><br>mysql中通过特有的表<br>id=1’ and (select count(*) from information_schema.TABLES)&gt;0 and ‘1’=’1<br>mysql中通过特殊时间延迟函数benchmark  下面这句是将md5(‘admin’) 执行100000次<br>id=1’ and (select BENCHMARK(100000,MD5(‘ADMIN’))) and ‘1’=’1<br>效果类似下图<br><img src="/2020/08/02/%E6%B2%A1%E4%BA%BA%E6%AF%94%E6%88%91%E6%9B%B4%E6%87%82%E7%BB%95waf%E4%B9%8B%E4%B8%80%E7%82%B9%E5%AF%92%E8%8A%92%E5%85%88%E5%88%B0%E9%9A%8F%E5%90%8E%E6%9E%AA%E5%87%BA%E5%A6%82%E9%BE%99/4.png" alt="没人比我更懂绕waf之一点寒芒先到随后枪出如龙"><br>oracle 通过特有函数 NLV2<br>介绍:<br>NVL2(expr1,expr2,expr3)，含义是：如果Oracle中第一个参数的值为空，那么显示第二个参数的值，如果第一个参数的值不为空，那么显示第三个参数的值。 类似于mysql中的 if<br>判断payload:<br>id=1’ and (select NVl2(‘a’,’aaa’,’b’)=’aaa</p>
+<p>oracle 通过爆错信息识别<br>ORA-01756:quoted string not properly terminated</p>
+<p>ORA-00933:SQLcommand not properly ended<br>oracle 通过特有的表  sys.user_tables<br> payload 如下:<br> id=1 ‘ and (select count(*) from sys.user_tables)&gt;’0</p>
+<p>orcale中  select ‘123’ 这种是不正确的语法  这种语法在mysql和mssql中可以 但是在oracle中 需要 加上from drual 在oracle 中select 必须要指明表名。若并非对真实的表进行查询，则需要用 dual 作为表名。这也是一个可以用来判断是否oralce的特点 比如下面的payload:<br>id=1’ and (select ‘aaa’ from drual)=’aaa<br>如果报语法出错那么显然不是oracle  否则是oracle<br>还有 len函数 这个函数是mssql  和 oracle 有. mysql 没有这个函数 所以利用这个函数也可以判断后端数据库是否是mysql</p>
+<p><strong>Second step</strong><br>好了第一步判断数据库的说了很多了 现在来说这次遇到的waf情况 首先它是个注入<br><img src="/2020/08/02/%E6%B2%A1%E4%BA%BA%E6%AF%94%E6%88%91%E6%9B%B4%E6%87%82%E7%BB%95waf%E4%B9%8B%E4%B8%80%E7%82%B9%E5%AF%92%E8%8A%92%E5%85%88%E5%88%B0%E9%9A%8F%E5%90%8E%E6%9E%AA%E5%87%BA%E5%A6%82%E9%BE%99/9.png" alt="没人比我更懂绕waf之一点寒芒先到随后枪出如龙"></p>
+<p>并且会把爆错位置显示出来</p>
+<p><img src="/2020/08/02/%E6%B2%A1%E4%BA%BA%E6%AF%94%E6%88%91%E6%9B%B4%E6%87%82%E7%BB%95waf%E4%B9%8B%E4%B8%80%E7%82%B9%E5%AF%92%E8%8A%92%E5%85%88%E5%88%B0%E9%9A%8F%E5%90%8E%E6%9E%AA%E5%87%BA%E5%A6%82%E9%BE%99/5.png" alt="没人比我更懂绕waf之一点寒芒先到随后枪出如龙"></p>
+<p>可以看出来是有waf的  首先我们先来判断一下 后端数据库是什么类型</p>
+<p><img src="/2020/08/02/%E6%B2%A1%E4%BA%BA%E6%AF%94%E6%88%91%E6%9B%B4%E6%87%82%E7%BB%95waf%E4%B9%8B%E4%B8%80%E7%82%B9%E5%AF%92%E8%8A%92%E5%85%88%E5%88%B0%E9%9A%8F%E5%90%8E%E6%9E%AA%E5%87%BA%E5%A6%82%E9%BE%99/6.png" alt="没人比我更懂绕waf之一点寒芒先到随后枪出如龙"></p>
+<p>似乎遇到了一点困难  好我们先得用上and, 绕过它就完事<br><img src="/2020/08/02/%E6%B2%A1%E4%BA%BA%E6%AF%94%E6%88%91%E6%9B%B4%E6%87%82%E7%BB%95waf%E4%B9%8B%E4%B8%80%E7%82%B9%E5%AF%92%E8%8A%92%E5%85%88%E5%88%B0%E9%9A%8F%E5%90%8E%E6%9E%AA%E5%87%BA%E5%A6%82%E9%BE%99/7.png" alt="没人比我更懂绕waf之一点寒芒先到随后枪出如龙"></p>
+<p>一根烟的功夫 and已经可以用了 好咱们来判读判断后端数据库类型 此处利用 oracle 特有的函数  nvl2 轻松判读出后端数据库是oracle</p>
+<p><img src="/2020/08/02/%E6%B2%A1%E4%BA%BA%E6%AF%94%E6%88%91%E6%9B%B4%E6%87%82%E7%BB%95waf%E4%B9%8B%E4%B8%80%E7%82%B9%E5%AF%92%E8%8A%92%E5%85%88%E5%88%B0%E9%9A%8F%E5%90%8E%E6%9E%AA%E5%87%BA%E5%A6%82%E9%BE%99/8.png" alt="没人比我更懂绕waf之一点寒芒先到随后枪出如龙"></p>
+<p>尝试爆错注入 但是不知道为什么没有成功爆错</p>
+<p><img src="/2020/08/02/%E6%B2%A1%E4%BA%BA%E6%AF%94%E6%88%91%E6%9B%B4%E6%87%82%E7%BB%95waf%E4%B9%8B%E4%B8%80%E7%82%B9%E5%AF%92%E8%8A%92%E5%85%88%E5%88%B0%E9%9A%8F%E5%90%8E%E6%9E%AA%E5%87%BA%E5%A6%82%E9%BE%99/10.png" alt="没人比我更懂绕waf之一点寒芒先到随后枪出如龙"></p>
+<p>注入有waf的情况很容易就走到现在这种情景下  绕过了一个限制 还有另外的限制 这样的注入其实利用起来根本没用,要想拖数据就得找到一个关键点,让waf懵逼,让它全部检测不到  但是这种关键点是很难找的,不仅要技术 奇思妙想 还要天时地利人和 运气好 </p>
+<p>我们这个地方硬刚是比较难刚了,注意到是json数据,那么waf怎么解析数据并且过滤呢,很可能是通过 request头部的信息来判断<br>当然比较厉害的waf也应该能够自动检测 数据包内容的格式<br>有了这个思路 所以把 requests头部的 application/json  改为 其他的任意东西  比如 application/text 然后我们在来看一下  用相同的payload 之前会被检测到的 现在已经不检测了</p>
+<p><img src="/2020/08/02/%E6%B2%A1%E4%BA%BA%E6%AF%94%E6%88%91%E6%9B%B4%E6%87%82%E7%BB%95waf%E4%B9%8B%E4%B8%80%E7%82%B9%E5%AF%92%E8%8A%92%E5%85%88%E5%88%B0%E9%9A%8F%E5%90%8E%E6%9E%AA%E5%87%BA%E5%A6%82%E9%BE%99/11.png" alt="没人比我更懂绕waf之一点寒芒先到随后枪出如龙"></p>
+<p>waf懵逼了   直接解析不鸟数据 当然也就检测不鸟了   刚才硬刚苦思冥想也绕不过的waf 现在改了 只修改了4个字母就大路通畅了 这就是绕waf 真是神奇 .</p>
+<p>接下来就是sqlmap 一把嗦了.</p>
+<p>0_0</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">bypass</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/08/02/%E6%B2%A1%E4%BA%BA%E6%AF%94%E6%88%91%E6%9B%B4%E6%87%82%E7%BB%95waf%E4%B9%8B%E4%B8%80%E7%82%B9%E5%AF%92%E8%8A%92%E5%85%88%E5%88%B0%E9%9A%8F%E5%90%8E%E6%9E%AA%E5%87%BA%E5%A6%82%E9%BE%99/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-实战绕过双重waf注入获取数据" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -501,97 +605,6 @@
 
 
   
-    <article id="post-test" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/30/test/">emmmmmmm-一次bypass</a>
-    </h1>
-  
-
-        
-        <a href="/2020/03/30/test/" class="archive-article-date">
-  	<time datetime="2020-03-30T09:14:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-30</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>前言</strong></p>
-<p>本次绕过waf是因为之前拿了某个厂商的源码,发现了新的洞洞,所以对之前没有拿下来的一个系统的再次日日日(某985大学waf)…………….</p>
-<p>基本情况是可以写入aspx文件  需要绕过waf</p>
-<p><strong>困难重重</strong></p>
-<p>自己尝试的时候 找了很多免杀小马 统统不得劲  这个waf 检测了很多关键字  什么 request  creatobject   write(…) 等等 经过一个晚上和上午的战斗 还是拿不下来， 于是找了位大哥帮忙，大哥果然是大哥，发现了http参数污染</p>
-        
-          <a class="article-more-a" href="/2020/03/30/test/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">bypass</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/bypassdog//" class="article-tag-list-link color5">bypassdog</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/03/30/test/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-getshell-某发卡平台" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -655,6 +668,97 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2020/03/30/getshell-%E6%9F%90%E5%8F%91%E5%8D%A1%E5%B9%B3%E5%8F%B0/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-test" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/30/test/">emmmmmmm-一次bypass</a>
+    </h1>
+  
+
+        
+        <a href="/2020/03/30/test/" class="archive-article-date">
+  	<time datetime="2020-03-30T09:14:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-30</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>前言</strong></p>
+<p>本次绕过waf是因为之前拿了某个厂商的源码,发现了新的洞洞,所以对之前没有拿下来的一个系统的再次日日日(某985大学waf)…………….</p>
+<p>基本情况是可以写入aspx文件  需要绕过waf</p>
+<p><strong>困难重重</strong></p>
+<p>自己尝试的时候 找了很多免杀小马 统统不得劲  这个waf 检测了很多关键字  什么 request  creatobject   write(…) 等等 经过一个晚上和上午的战斗 还是拿不下来， 于是找了位大哥帮忙，大哥果然是大哥，发现了http参数污染</p>
+        
+          <a class="article-more-a" href="/2020/03/30/test/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">bypass</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/bypassdog//" class="article-tag-list-link color5">bypassdog</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/03/30/test/">展开全文 >></a>
         </p>
       
 
@@ -777,11 +881,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">bypass</a>
+                <a href="javascript:void(0)" class="js-tag color3">审计</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">注入bypass</a>
+                <a href="javascript:void(0)" class="js-tag color2">bypass</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -789,7 +893,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">审计</a>
+                <a href="javascript:void(0)" class="js-tag color4">注入bypass</a>
               </li>
             
             <div class="clearfix"></div>
